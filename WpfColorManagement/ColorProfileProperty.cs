@@ -103,9 +103,14 @@ namespace WpfColorManagement
 			ColorProfilePath = filePath;
 		}
 
-		public string GetColorProfilePath(Visual window)
+		/// <summary>
+		/// Get color profile file path used by the monior to which a specified Window belongs.
+		/// </summary>
+		/// <param name="sourceVisual">Source Window</param>
+		/// <returns>Color profile file path</returns>
+		private string GetColorProfilePath(Visual sourceVisual)
 		{
-			var source = PresentationSource.FromVisual(window) as HwndSource;
+			var source = PresentationSource.FromVisual(sourceVisual) as HwndSource;
 			if (source == null)
 				return null;
 

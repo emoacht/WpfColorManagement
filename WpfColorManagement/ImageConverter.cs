@@ -9,6 +9,12 @@ namespace WpfColorManagement
 {
 	public class ImageConverter
 	{
+		/// <summary>
+		/// Convert byte array of an image to BitmapSource reflecting color profiles.
+		/// </summary>
+		/// <param name="sourceData">Byte array of source image</param>
+		/// <param name="colorProfilePath">Color profile file path used by a monitor</param>
+		/// <returns></returns>
 		public static async Task<BitmapSource> ConvertImageAsync(byte[] sourceData, string colorProfilePath)
 		{
 			using (var ms = new MemoryStream())
@@ -27,11 +33,11 @@ namespace WpfColorManagement
 
 				ccb.SourceColorContext = ((frame.ColorContexts != null) && frame.ColorContexts.Any())
 					? frame.ColorContexts.First()
-					: new ColorContext(PixelFormats.Bgra32); // Fallback
+					: new ColorContext(PixelFormats.Bgra32); // Fallback color profile
 
 				ccb.DestinationColorContext = !String.IsNullOrEmpty(colorProfilePath)
 					? new ColorContext(new Uri(colorProfilePath))
-					: new ColorContext(PixelFormats.Bgra32); // Fallback
+					: new ColorContext(PixelFormats.Bgra32); // Fallback color profile
 
 				ccb.DestinationFormat = PixelFormats.Bgra32;
 				ccb.EndInit();

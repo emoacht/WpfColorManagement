@@ -1,7 +1,7 @@
 ﻿WPF Color Management
 ====================
 
-A sample attached property of color profile for color management in WPF.
+A sample attached property of color profile for color management.
 
 ##Requirements
 

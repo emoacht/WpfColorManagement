@@ -1,0 +1,21 @@
+﻿<Window x:Class="WpfColorManagement.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:cm="clr-namespace:WpfColorManagement"
+		x:Name="WindowRoot"
+		Title="WPF Color Management"
+		Height="360" Width="500"
+		AllowDrop="True">
+	<cm:ColorProfileProperty.AttachedProperty>
+		<cm:ColorProfileProperty ColorProfilePath="{Binding ElementName=WindowRoot, Path=ColorProfilePath, Mode=OneWayToSource}"/>
+	</cm:ColorProfileProperty.AttachedProperty>
+
+	<StackPanel>
+		<!-- Color Profile Path -->
+		<TextBox Text="{Binding ElementName=WindowRoot, Path=ColorProfilePath}"/>
+
+		<!-- Converted Image -->
+		<Image Source="{Binding ElementName=WindowRoot, Path=ConvertedImage}"
+			   IsHitTestVisible="False"/>
+	</StackPanel>
+</Window>

@@ -62,7 +62,7 @@ namespace WpfColorManagement
 				typeof(string),
 				typeof(MainWindow),
 				new PropertyMetadata(
-					String.Empty,
+					null,
 					async (d, e) => await ((MainWindow)d).ConvertImageAsync()));
 
 		public BitmapSource ConvertedImage

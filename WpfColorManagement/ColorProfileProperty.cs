@@ -53,7 +53,7 @@ namespace WpfColorManagement
 				"ColorProfilePath",
 				typeof(string),
 				typeof(ColorProfileProperty),
-				new FrameworkPropertyMetadata(String.Empty));
+				new FrameworkPropertyMetadata(null));
 
 		private Window OwnerWindow
 		{
@@ -73,7 +73,7 @@ namespace WpfColorManagement
 		{
 			OwnerWindow.SourceInitialized -= OnSourceInitialized;
 
-			CheckColorProfilePath(OwnerWindow);
+			ColorProfilePath = GetColorProfilePath(OwnerWindow);
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
@@ -94,14 +94,20 @@ namespace WpfColorManagement
 
 		private void OnLocationSizeChanged(object sender, EventArgs e)
 		{
-			CheckColorProfilePath(OwnerWindow);
+			var filePath = GetColorProfilePath(OwnerWindow);
+
+			if (String.IsNullOrEmpty(filePath) ||
+				filePath.Equals(ColorProfilePath, StringComparison.OrdinalIgnoreCase))
+				return;
+
+			ColorProfilePath = filePath;
 		}
 
-		public void CheckColorProfilePath(Visual window)
+		public string GetColorProfilePath(Visual window)
 		{
 			var source = PresentationSource.FromVisual(window) as HwndSource;
 			if (source == null)
-				return;
+				return null;
 
 			var monitorHandle = NativeMethod.MonitorFromWindow(
 				source.Handle,
@@ -113,7 +119,7 @@ namespace WpfColorManagement
 			};
 
 			if (!NativeMethod.GetMonitorInfo(monitorHandle, ref monitorInfo))
-				return;
+				return null;
 
 			IntPtr deviceContext = IntPtr.Zero;
 
@@ -126,7 +132,7 @@ namespace WpfColorManagement
 					IntPtr.Zero);
 
 				if (deviceContext == IntPtr.Zero)
-					return;
+					return null;
 
 				// First, get the length of file path.
 				var lpcbName = 0U;
@@ -135,10 +141,8 @@ namespace WpfColorManagement
 				// Second, get the file path using StringBuilder which has the same length. 
 				var sb = new StringBuilder((int)lpcbName);
 				NativeMethod.GetICMProfile(deviceContext, ref lpcbName, sb);
-				var filePath = sb.ToString();
 
-				if (!ColorProfilePath.Equals(filePath, StringComparison.OrdinalIgnoreCase))
-					ColorProfilePath = filePath;
+				return sb.ToString();
 			}
 			finally
 			{

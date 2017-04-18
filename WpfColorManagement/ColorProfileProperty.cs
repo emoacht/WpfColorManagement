@@ -18,7 +18,6 @@ namespace WpfColorManagement
 
 		#endregion
 
-
 		public static ColorProfileProperty GetAttachedProperty(Window window)
 		{
 			return (ColorProfileProperty)window.GetValue(AttachedPropertyProperty);
@@ -96,7 +95,7 @@ namespace WpfColorManagement
 		{
 			var filePath = GetColorProfilePath(OwnerWindow);
 
-			if (String.IsNullOrEmpty(filePath) ||
+			if (string.IsNullOrEmpty(filePath) ||
 				filePath.Equals(ColorProfilePath, StringComparison.OrdinalIgnoreCase))
 				return;
 
@@ -104,11 +103,11 @@ namespace WpfColorManagement
 		}
 
 		/// <summary>
-		/// Get color profile file path used by the monior to which a specified Window belongs.
+		/// Get color profile file path used by the monitor to which a specified Window belongs.
 		/// </summary>
 		/// <param name="sourceVisual">Source Window</param>
 		/// <returns>Color profile file path</returns>
-		private string GetColorProfilePath(Visual sourceVisual)
+		private static string GetColorProfilePath(Visual sourceVisual)
 		{
 			var source = PresentationSource.FromVisual(sourceVisual) as HwndSource;
 			if (source == null)

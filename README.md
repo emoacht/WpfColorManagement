@@ -1,12 +1,11 @@
-﻿WPF Color Management
-====================
+﻿# WPF Color Management
 
 A sample attached property of color profile for color management.
 
-##Requirements
+## Requirements
 
  * .NET Framework 4.5 for sample app
 
-##License
+## License
 
  - MIT License
